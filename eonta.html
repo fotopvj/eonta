@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Eonta</title>
+<link rel="stylesheet" href="_css/_styles.css"  type="text/css">
+</head>
+<body>
+<header role="banner">
+  <h1>EONTA</h1>
+  <h2>Platform for Creating GPS Based Compositions</h2>
+  <nav role="navigation">
+    <ul>
+      <li><a href="intro.htm" title="Eonta">Eonta</a></li>
+        <li><a href="syntax.htm" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<main role="main">
+  <article role="article">
+    <header>
+      <p>Create sound installations and compositions based on your environment.</p>
+    </header>
+      <p>
+        <input name="coordinateButton" type="button" id="coordinate" value="Click For Coordinates">
+     </p>
+        </section>
+      </p>
+    <p>&nbsp;</p>
+    
+    <!--google map API-->
+    <div id="map"></div>
+    
+  </article>
+</main>
+<footer role="contentinfo">
+  <p>&copy; <a href="http://www.lynda.com" title="lynda.com" target="_blank">Vasilis Fotopoulos</a> | follow me on Twitter. 
+  <a href="https://twitter.com/d0m0k0s" title="Follow me on Twitter">@d0m0k0s</a></p>
+</footer>
+
+<script src="_scripts/_eonta.js"></script>
+
+<!-- Google maps API script tag-->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAThgvzOfkrCe4w2oZegF-J0GHFFQSUMRQ&libraries=drawing&callback=initMap"
+    async defer></script>
+
+
+</body>
+</html>
