@@ -1,0 +1,20 @@
+{
+  "name": "eonta",
+  "homepage": "https://github.com/fotopvj/eonta",
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.5"
+  }
+}

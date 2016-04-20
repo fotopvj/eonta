@@ -16,7 +16,10 @@
     </ul>
   </nav>
 </header>
-<main role="main">
+
+
+<main role="main" ng-app="eonta" ng-controller="mainController">
+
   <article role="article">
     <header>
       <p>Create sound installations and compositions based on your environment.</p>
@@ -33,17 +36,19 @@
     
   </article>
 </main>
+
 <footer role="contentinfo">
   <p>&copy; <a href="http://www.lynda.com" title="lynda.com" target="_blank">Vasilis Fotopoulos</a> | follow me on Twitter. 
   <a href="https://twitter.com/d0m0k0s" title="Follow me on Twitter">@d0m0k0s</a></p>
 </footer>
 
-<script src="_scripts/_eonta.js"></script>
 
+<script type="text/javascript" src="public/lib/angular/angular.js"></script>
+
+<script src="_scripts/app.js"></script>
+<script src="_scripts/main-controller.js"></script>
 <!-- Google maps API script tag-->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAThgvzOfkrCe4w2oZegF-J0GHFFQSUMRQ&libraries=drawing&callback=initMap"
-    async defer></script>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAThgvzOfkrCe4w2oZegF-J0GHFFQSUMRQ&libraries=drawing,places,geometry&callback=initMap" async defer></script>
 
 </body>
 </html>

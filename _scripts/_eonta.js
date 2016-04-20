@@ -3,52 +3,58 @@
 
 // The map initiation, decides the center and the level of initial zoom 
 function initMap() {
-   
-// styling for the look of the map
-    var styleArray = [
-    {
-      featureType: "all",
-      stylers: [
-       { saturation: -100 }
-      ]
-    },{
-      featureType: "road.arterial",
-      elementType: "geometry",
-      stylers: [
-        { hue: "#ffc749" },
-        { saturation: 700 }
-      ]
-    },{
-      featureType: "poi.business",
-      elementType: "labels",
-      stylers: [
-        { visibility: "off" }
-      ]
-    }
-  ];
-   
-   var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 40, lng: -73},
-          styles: styleArray,
-          zoom: 10
-    });
-    
-var drawingManager = new google.maps.drawing.DrawingManager({
-    drawingMode: google.maps.drawing.OverlayType.MARKER,
+
+  // styling for the look of the map
+  var styleArray = [{
+    featureType: "all",
+    stylers: [{
+      saturation: -100
+    }]
+  }, {
+    featureType: "road.arterial",
+    elementType: "geometry",
+    stylers: [{
+      hue: "#ffc749"
+    }, {
+      saturation: 700
+    }]
+  }, {
+    featureType: "poi.business",
+    elementType: "labels",
+    stylers: [{
+      visibility: "off"
+    }]
+  }];
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: {
+      lat: 40,
+      lng: -73
+    },
+    styles: styleArray,
+    zoom: 10
+  });
+
+  var drawingManager = new google.maps.drawing.DrawingManager({
+    drawingMode: google.maps.drawing.OverlayType.POLYGON,
     drawingControl: true,
     drawingControlOptions: {
       position: google.maps.ControlPosition.TOP_CENTER,
       drawingModes: [
         google.maps.drawing.OverlayType.MARKER,
         google.maps.drawing.OverlayType.CIRCLE,
-        google.maps.drawing.OverlayType.POLYGON,
-        google.maps.drawing.OverlayType.POLYLINE,
-        google.maps.drawing.OverlayType.RECTANGLE
+        google.maps.drawing.OverlayType.POLYGON
       ]
     },
-    
-//Options for the parameters of each overlay shape type
-    markerOptions: {icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'},
+
+    //Options for the parameters of each overlay shape type
+    markerOptions: {
+      icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+      draggable: true,
+      clickable: true,
+      editable: true,
+      zIndex: 10000
+    },
     circleOptions: {
       fillColor: '#ffff00',
       fillOpacity: .5,
@@ -58,107 +64,103 @@ var drawingManager = new google.maps.drawing.DrawingManager({
       zIndex: 1,
       draggable: true 
     },
-      polygonOptions: {
+    polygonOptions: {
       fillColor: '#ffff00',
       fillOpacity: .5,
       strokeWeight: 2,
-      clickable: false,
-      editable: true,  
-      zIndex: 1,
-      draggable: true       
-    },
-     polylineOptions: {
-      fillColor: '#ffff00',
-      fillOpacity: .5,
-      strokeWeight: 2,
-      clickable: false,
-      editable: true,
-      zIndex: 1,
-      draggable: true     
-    },
-     rectangleOptions: {
-      fillColor: '#ffff00',
-      fillOpacity: .5,
-      strokeWeight: 2,
-      clickable: false,
+      clickable: true,
       editable: true,
       zIndex: 1,
       draggable: true
-    }
-     
+    },
+    //  polylineOptions: {
+    //   fillColor: '#ffff00',
+    //   fillOpacity: .5,
+    //   strokeWeight: 2,
+    //   clickable: false,
+    //   editable: true,
+    //   zIndex: 1,
+    //   draggable: true     
+    // },
+    //  rectangleOptions: {
+    //   fillColor: '#ffff00',
+    //   fillOpacity: .5,
+    //   strokeWeight: 2,
+    //   clickable: false,
+    //   editable: true,
+    //   zIndex: 1,
+    //   draggable: true
+    // }
+
   });
-// adds the drawing manger to the map
+  // adds the drawing manger to the map
   drawingManager.setMap(map);
-    
-// array to store the overlays
-var stemBoundaries = [];
-    
-    
- 
-// tests whether a circle was made to the map, gives the radius 
-  google.maps.event.addListener(drawingManager, 'circlecomplete', function(circle) {
-  var radius = circle.getRadius();
-  console.log('the radius is '+ radius);
-});
 
-// shows the circle has been made, gives the same radius  
-google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
-  if (event.type == google.maps.drawing.OverlayType.CIRCLE) {
-    var radius = event.overlay.getRadius();
-    console.log('the shape has a radius of '+ radius);
-  }
-    
-// shows the polygon has been made, gives the same radius   
-  else if (event.type == google.maps.drawing.OverlayType.POLYGON) {
-      
-// find the area of the polygon.
-      console.log('the area of the polygon is ');
+  // array to store the overlays
+  var stemBoundaries = [];
+
+  var polygons = [];
+
+  google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygon) {
+    polygons.push(polygon);
+    updateSounds(pos, polygon)
+  });
+
+
+  // shows the circle has been made, gives the same radius  
+  google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
+
+
+    // shows the polygon has been made, gives the same radius   
+    // else if (event.type == google.maps.drawing.OverlayType.POLYGON) {
+
+    // find the area of the polygon.
+    // console.log('the event of the polygon is ', this, event);
+    // }
+
+  });
+
+
+  function updateSounds(latlong, polygon) {
+    console.log(latlong, polygon)
+    var contains = google.maps.geometry.poly.containsLocation({
+      point: latlong,
+      polygon: polygon
+    })
+    console.log(contains)
   }
 
-// shows the polyline has been made, gives the same radius     
-  else if (event.type == google.maps.drawing.OverlayType.POLYLINE) {
-      
-// find the length of the polyline.
-      console.log('the length of the polyline is ');
-  }
- 
-// shows the rectangle has been made, gives the same radius     
-    else if (event.type == google.maps.drawing.OverlayType.RECTANGLE) {
-      
-// find the area of the rectangle.
-      console.log('the area of the rectangle is ');
-  }
-});
+  var pos;
+  // create an info window to initiate user position.  
+  var infoWindow = new google.maps.InfoWindow({
+    map: map
+  });
 
-   
-// create an info window to initiate user position.  
-var infoWindow = new google.maps.InfoWindow({map: map});
-
-// finds the users initial coordinates and repositions the map to center around the user.  
+  // finds the users initial coordinates and repositions the map to center around the user.  
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-      var pos = {
+      pos = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
 
       infoWindow.setPosition(pos);
       infoWindow.setContent('Location found.');
-        
-    
-    var coordinateClick = document.getElementById('coordinate');
-    
-    coordinateClick.onclick = function() {
-    alert("Your latitude is: " + position.coords.latitude + ", your longitude is: " + position.coords.longitude);
-    }
-        
-    
-// reposition map to the user's position.
+
+
+      var coordinateClick = document.getElementById('coordinate');
+
+      coordinateClick.onclick = function() {
+        alert("Your latitude is: " + position.coords.latitude + ", your longitude is: " + position.coords.longitude);
+      }
+
+
+      // reposition map to the user's position.
       map.setCenter(pos);
-        
-// zoom onto the user
+
+      // zoom onto the user
       map.setZoom(16);
-        
+
       console.log("your initial position is latitude:" + position.coords.latitude + ", longitude: " + position.coords.longitude);
     }, function() {
       handleLocationError(true, infoWindow, map.getCenter());
@@ -172,25 +174,22 @@ var infoWindow = new google.maps.InfoWindow({map: map});
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.setPosition(pos);
   infoWindow.setContent(browserHasGeolocation ?
-                        'Error: The Geolocation service failed.' :
-                        'Error: Your browser doesn\'t support geolocation.');
+    'Error: The Geolocation service failed.' :
+    'Error: Your browser doesn\'t support geolocation.');
 }
 
-//pointless coordinate button.
-function prepareEventHandlers () {
+// //pointless coordinate button.
+// function prepareEventHandlers() {
 
-    /*
-    var coordinateClick = document.getElementById('coordinate');
+  
+//   var coordinateClick = document.getElementById('coordinate');
     
-    coordinateClick.onclick = function() {
-    alert("latitude: " + position.coords.latitude + ", longitude + " + position.coords.longitude);
-    }*/
-}
+//   coordinateClick.onclick = function() {
+//   alert("latitude: " + position.coords.latitude + ", longitude + " + position.coords.longitude);
+//   }
+// }
 
-//event handler happens onload
-window.onload = function () {
-    prepareEventHandlers();
-}
-
-
-
+// //event handler happens onload
+// window.onload = function() {
+//   prepareEventHandlers();
+// }
