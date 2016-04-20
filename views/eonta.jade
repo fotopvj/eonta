@@ -1,0 +1,37 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    title Eonta
+    link(rel='stylesheet', href='css/_styles.css', type='text/css')
+  body
+    header(role='banner')
+      h1 EONTA
+      h2 Platform for Creating GPS Based Compositions
+      nav(role='navigation')
+        ul
+          li
+            a(href='intro.htm', title='Eonta') Eonta
+          li
+            a(href='syntax.htm', title='About') About
+    main(role='main', ng-app='eonta', ng-controller='mainController')
+      article(role='article')
+        header
+          p Create sound installations and compositions based on your environment.
+        p
+          input#coordinate(name='coordinateButton', type='button', value='Click For Coordinates')
+        p
+        p  
+        // google map API
+        #map
+    footer(role='contentinfo')
+      p
+        | © 
+        a(href='http://www.lynda.com', title='lynda.com', target='_blank') Vasilis Fotopoulos
+        |  | follow me on Twitter. 
+        a(href='https://twitter.com/d0m0k0s', title='Follow me on Twitter') @d0m0k0s
+    script(type='text/javascript', src='lib/angular/angular.js')
+    script(src='scripts/app.js')
+    script(src='scripts/main-controller.js')
+    // Google maps API script tag
+    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAThgvzOfkrCe4w2oZegF-J0GHFFQSUMRQ&libraries=drawing,places,geometry&callback=initMap', async='', defer='')
