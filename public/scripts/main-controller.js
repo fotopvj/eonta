@@ -153,12 +153,17 @@ app.controller('mainController', function($scope) {
 				infoWindow.setContent('Location found.');
 
 
-				var coordinateClick = document.getElementById('coordinate');
+				var auditionCheck = document.getElementById('audition');
 
-				coordinateClick.onclick = function() {
-					alert("Your latitude is: " + position.coords.latitude + ", your longitude is: " + position.coords.longitude);
+				auditionCheck.onchange= function() {
+					if(this.checked) {marker = new google.maps.Marker({
+                        map: map,
+                        draggable: true,
+                        animation: google.maps.Animation.DROP,
+                        position: {lat: position.coords.latitude, lng: position.coords.longitude}});        
+                    }
 				}
-
+                
 
 				// reposition map to the user's position.
 				map.setCenter(pos);
