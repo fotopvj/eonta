@@ -155,8 +155,6 @@ app.controller('mainController', function($scope, Uploader) {
 				infoWindow.setPosition(pos);
 				infoWindow.setContent('Location found.');
 
-
-<<<<<<< HEAD
 				var auditionCheck = document.getElementById('audition');
 
 				auditionCheck.onchange= function() {
@@ -167,14 +165,6 @@ app.controller('mainController', function($scope, Uploader) {
                         position: {lat: position.coords.latitude, lng: position.coords.longitude}});        
                     }
 				}
-                
-=======
-				var coordinateClick = document.getElementById('coordinate');
-
-				coordinateClick.onclick = function() {
-					alert('Your latitude is: ' + position.coords.latitude + ', your longitude is: ' + position.coords.longitude);
-				};
->>>>>>> 3724101338306e410985462dca10e9d4635ea99e
 
 				// reposition map to the user's position.
 				map.setCenter(pos);
