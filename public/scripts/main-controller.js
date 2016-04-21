@@ -3,21 +3,21 @@
 app.controller('mainController', function($scope, Uploader) {
 
 	$scope.upload = function() {
-        var file = document.getElementById('upload').files[0];
-        if (!file) {
-        	console.error('No file uploaded!');
-        	return
-        } else if (file.type !== 'audio/mp3' && file.type !== 'audio/ogg') {
-        	console.error('Wrong file type!')	
-        	return;
-        }
+		var file = document.getElementById('upload').files[0];
+		if (!file) {
+			console.error('No file uploaded!');
+			return
+		} else if (file.type !== 'audio/mp3' && file.type !== 'audio/ogg') {
+			console.error('Wrong file type!')
+			return;
+		}
 
-        Uploader.sign_request(file, function(response) {
-            Uploader.upload(file, response.signed_request, response.url, function() {
-            	console.log('upload complete', file);
-            });
-        });
-    }
+		Uploader.sign_request(file, function(response) {
+			Uploader.upload(file, response.signed_request, response.url, function() {
+				console.log('upload complete', file);
+			});
+		});
+	}
 
 	// The map initiation, decides the center and the level of initial zoom 
 	window.initMap = function initMap() {
@@ -127,8 +127,15 @@ app.controller('mainController', function($scope, Uploader) {
 		});
 
 		function updatePolygons(latlong, polygon) {
-			$scope.polygons.push(polygon);
-			$scope.$apply();
+
+			vex.dialog.confirm({
+				message: 'does this work?'
+			});
+
+
+
+			// $scope.polygons.push(polygon);
+			// $scope.$apply();
 		}
 
 		google.maps.event.addListener(map, 'click', function(e) {
@@ -157,13 +164,23 @@ app.controller('mainController', function($scope, Uploader) {
 
 				var auditionCheck = document.getElementById('audition');
 
-				auditionCheck.onchange= function() {
-					if(this.checked) {marker = new google.maps.Marker({
-                        map: map,
-                        draggable: true,
-                        animation: google.maps.Animation.DROP,
-                        position: {lat: position.coords.latitude, lng: position.coords.longitude}});        
-                    }
+				var marker;
+				auditionCheck.onchange = function() {
+
+					if (this.checked) {
+						marker = new google.maps.Marker({
+							map: map,
+							draggable: true,
+							animation: google.maps.Animation.DROP,
+							position: {
+								lat: position.coords.latitude,
+								lng: position.coords.longitude
+							}
+						});
+					} else if (marker) {
+						marker.setMap(null);
+						marker = null;
+					}
 				}
 
 				// reposition map to the user's position.
