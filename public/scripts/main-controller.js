@@ -2,14 +2,19 @@
 
 app.controller('mainController', function($scope, Uploader) {
 
-
 	$scope.upload = function() {
         var file = document.getElementById('upload').files[0];
-        if (!file) return;
+        if (!file) {
+        	console.error('No file uploaded!');
+        	return
+        } else if (file.type !== 'audio/mp3' && file.type !== 'audio/ogg') {
+        	console.error('Wrong file type!')	
+        	return;
+        }
 
         Uploader.sign_request(file, function(response) {
             Uploader.upload(file, response.signed_request, response.url, function() {
-            	console.log('upload complete', file)
+            	console.log('upload complete', file);
             });
         });
     }
@@ -133,17 +138,6 @@ app.controller('mainController', function($scope, Uploader) {
 			});
 		});
 
-
-		// JSON.stringify = function(obj) {
-		// 	return JSON.stringify(obj, function(key, value) {
-		// 		if (key == 'parent') {
-		// 			return value.id;
-		// 		} else {
-		// 			return value;
-		// 		}
-		// 	});
-		// }
-
 		var pos;
 		// create an info window to initiate user position.  
 		var infoWindow = new google.maps.InfoWindow({
@@ -174,7 +168,7 @@ app.controller('mainController', function($scope, Uploader) {
 				// zoom onto the user
 				map.setZoom(16);
 
-				console.log('your initial position is latitude:' + position.coords.latitude + ', longitude: ' + position.coords.longitude);
+				// console.log('your initial position is latitude:' + position.coords.latitude + ', longitude: ' + position.coords.longitude);
 			}, function() {
 				handleLocationError(true, infoWindow, map.getCenter());
 			});
