@@ -1,34 +1,35 @@
 var dotenv = require('dotenv').config();
-
 var express = require('express');
 var router = express.Router();
-var knox = require('knox');
-
-var s3 = knox.createClient({
-	key: process.env.AS3_ACCESS_KEY,
-	secret: process.env.AS3_SECRET_ACCESS_KEY,
-	bucket: process.env.AS3_BUCKET,
-});
+var aws = require('aws-sdk');
 
 /* GET home page. */
 router.get('/', function(req, res) {
 	res.render('eonta', {});
 });
 
-router.post('/upload', function(req, res) {
-	var headers = {
-		'x-amz-acl': 'public-read',
-		'Access-Control-Allow-Origin': '*'
+/* GET sign requests for AWS. */
+router.get('/sign', function(req, res) {
+	aws.config.update({
+		accessKeyId: process.env.AS3_ACCESS_KEY,
+		secretAccessKey: process.env.AS3_SECRET_ACCESS_KEY
+	});
+
+	var s3 = new aws.S3();
+	var options = {
+		Bucket: process.env.AS3_BUCKET,
+		Key: req.query.file_name,
+		Expires: 60,
+		ContentType: req.query.file_type,
+		ACL: 'public-read'
 	};
-	req.form.on('part', function(part) {
-		console.log('part',part)
-		headers['Content-Length'] = part.byteCount;
-		s3.putStream(part, part.filename, headers, function(err, s3res) {
-			if (err) {
-				return res.send(500, err);
-			}
-			console.log(s3res);
-			res.render('eonta', {});
+
+	s3.getSignedUrl('putObject', options, function(err, data) {
+		if (err) return res.send('Error with S3');
+
+		res.json({
+			signed_request: data,
+			url: 'https://s3.amazonaws.com/' + process.env.AS3_BUCKET + '/' + req.query.file_name
 		});
 	});
 });
