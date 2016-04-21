@@ -129,7 +129,10 @@ app.controller('mainController', function($scope, Uploader) {
 		function updatePolygons(latlong, polygon) {
 
 			vex.dialog.confirm({
-				message: 'does this work?'
+				message: 'does this work?',
+				callback: function(val) {
+					console.log('returned val',val)
+				}
 			});
 
 
