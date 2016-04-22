@@ -18,7 +18,6 @@ html(lang='en')
             a(href='syntax.htm', title='About') About
     main(role='main', ng-app='eonta', ng-controller='mainController')
       h1 welcome
-      p please select a file
       input#upload(type="file" onchange="angular.element(this).scope().upload(this)")
       br
       article(role='article')
@@ -40,7 +39,7 @@ html(lang='en')
     script(type='text/javascript', src='vendor/jquery/dist/jquery.min.js')
     script(type='text/javascript', src='vendor/vex/js/vex.combined.min.js')
     script(src='scripts/app.js')
-    script(src='scripts/uploader.js')
+    script(src='scripts/services/uploader.js')
     script(src='scripts/main-controller.js')
     // Google maps API script tag
     script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAThgvzOfkrCe4w2oZegF-J0GHFFQSUMRQ&libraries=drawing,places,geometry&callback=initMap', async='', defer='')

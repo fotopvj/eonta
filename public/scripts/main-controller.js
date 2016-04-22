@@ -2,6 +2,43 @@
 
 app.controller('mainController', function($scope, Uploader) {
 
+	function updatePolygons(latlong, polygon) {
+		vex.dialog.confirm({
+			message: 'do you want to upload an audio file for this location?',
+			callback: function(val) {
+				if (val) {
+					$('#upload').click();
+				} else {
+					polygon.setMap(null);
+					polygon = null;
+				}
+			}
+		});
+	}
+	
+	// styling for the look of the map
+	var styleArray = [{
+		featureType: 'all',
+		stylers: [{
+			saturation: -100
+		}]
+	}, {
+		featureType: 'road.arterial',
+		elementType: 'geometry',
+		stylers: [{
+			hue: '#ffc749'
+		}, {
+			saturation: 700
+		}]
+	}, {
+		featureType: 'poi.business',
+		elementType: 'labels',
+		stylers: [{
+			visibility: 'off'
+		}]
+	}];
+
+
 	$scope.upload = function() {
 		var file = document.getElementById('upload').files[0];
 		if (!file) {
@@ -21,29 +58,6 @@ app.controller('mainController', function($scope, Uploader) {
 
 	// The map initiation, decides the center and the level of initial zoom 
 	window.initMap = function initMap() {
-
-		// styling for the look of the map
-		var styleArray = [{
-			featureType: 'all',
-			stylers: [{
-				saturation: -100
-			}]
-		}, {
-			featureType: 'road.arterial',
-			elementType: 'geometry',
-			stylers: [{
-				hue: '#ffc749'
-			}, {
-				saturation: 700
-			}]
-		}, {
-			featureType: 'poi.business',
-			elementType: 'labels',
-			stylers: [{
-				visibility: 'off'
-			}]
-		}];
-
 		var map = new google.maps.Map(document.getElementById('map'), {
 			center: {
 				lat: 40,
@@ -63,7 +77,6 @@ app.controller('mainController', function($scope, Uploader) {
 					google.maps.drawing.OverlayType.POLYGON
 				]
 			},
-
 			//Options for the parameters of each overlay shape type
 			circleOptions: {
 				fillColor: '#ffff00',
@@ -82,26 +95,7 @@ app.controller('mainController', function($scope, Uploader) {
 				editable: true,
 				zIndex: 1,
 				draggable: true
-			},
-			//  polylineOptions: {
-			//   fillColor: '#ffff00',
-			//   fillOpacity: .5,
-			//   strokeWeight: 2,
-			//   clickable: false,
-			//   editable: true,
-			//   zIndex: 1,
-			//   draggable: true     
-			// },
-			//  rectangleOptions: {
-			//   fillColor: '#ffff00',
-			//   fillOpacity: .5,
-			//   strokeWeight: 2,
-			//   clickable: false,
-			//   editable: true,
-			//   zIndex: 1,
-			//   draggable: true
-			// }
-
+			}
 		});
 		// adds the drawing manger to the map
 		drawingManager.setMap(map);
@@ -112,35 +106,7 @@ app.controller('mainController', function($scope, Uploader) {
 			updatePolygons(pos, polygon);
 		});
 
-
-		// shows the circle has been made, gives the same radius  
-		google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
-			console.log(event);
-
-			// shows the polygon has been made, gives the same radius   
-			// else if (event.type == google.maps.drawing.OverlayType.POLYGON) {
-
-			// find the area of the polygon.
-			// console.log('the event of the polygon is ', this, event);
-			// }
-
-		});
-
-		function updatePolygons(latlong, polygon) {
-
-			vex.dialog.confirm({
-				message: 'does this work?',
-				callback: function(val) {
-					console.log('returned val',val)
-				}
-			});
-
-
-
-			// $scope.polygons.push(polygon);
-			// $scope.$apply();
-		}
-
+		// fix this
 		google.maps.event.addListener(map, 'click', function(e) {
 			$scope.polygons.forEach(function(shape) {
 				var res = google.maps.geometry.poly.containsLocation(e.latLng, shape);
