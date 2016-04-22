@@ -77,8 +77,6 @@ app.service('Maps', function($rootScope) {
                 lng: position.coords.longitude
             };
 
-            infoWindow.setPosition(pos);
-
             var auditionCheck = document.getElementById('audition');
 
             var marker;
