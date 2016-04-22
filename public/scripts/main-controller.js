@@ -1,7 +1,9 @@
 'use strict';
 
+	//for db saving
+	// http://stackoverflow.com/questions/32800664/google-map-api-v3-how-to-get-coordinates-of-all-shapes/32807644#32807644
 
-	app.controller('mainController', function($rootScope, $scope, Maps, Uploader) {
+	app.controller('mainController', function($scope, Maps, Uploader) {
 
 		$scope.polygons = {};
 
@@ -9,10 +11,17 @@
 			console.log(polygon);
 		};
 
-		google.maps.event.addListener(map, 'click', function(e) {
-			$scope.polygons.forEach(function(shape) {
-				var res = google.maps.geometry.poly.containsLocation(e.latLng, shape);
-				console.log('checks shape', res);
+		google.maps.event.addListener(Maps.map, 'click', function(e) {
+			Object.keys($scope.polygons).forEach(function(polyKey) {
+				var shape = $scope.polygons[polyKey];
+				var res = google.maps.geometry.poly.containsLocation(e.latLng, shape.polygon);
+
+				/*
+
+					play your audio here !!!!
+
+				*/
+
 			});
 		});
 		google.maps.event.addListener(Maps.drawingManager, 'polygoncomplete', function(polygon) {
@@ -36,9 +45,13 @@
 		}
 
 		$scope.highlight = function(poly) {
-
+			//set the default color for all polygons
+			Object.keys($scope.polygons).forEach(function(item) {
+				$scope.polygons[item].polygon.setOptions({strokeWeight: 2.0, fillColor: Maps.defaultFill});
+			});
+			//set the highlight color for the selected polygon
+			poly.polygon.setOptions({strokeWeight: 2.0, fillColor: Maps.highlightFill});
 		};
-
 
 		$scope.deletePolygon = function(polygon) {
 			if (polygon.filename) {
@@ -56,6 +69,7 @@
 			};
 
 			$scope.polygons[filename] = newPolygon;
+			$scope.highlight(newPolygon);
 			$scope.$apply();
 		}
 
