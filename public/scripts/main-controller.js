@@ -1,7 +1,9 @@
 'use strict';
 
+	//for db saving
+	// http://stackoverflow.com/questions/32800664/google-map-api-v3-how-to-get-coordinates-of-all-shapes/32807644#32807644
 
-	app.controller('mainController', function($rootScope, $scope, Maps, Uploader) {
+	app.controller('mainController', function($scope, Maps, Uploader) {
 
 		$scope.polygons = {};
 
