@@ -3,7 +3,7 @@
 
 	app.controller('mainController', function($rootScope, $scope, Maps, Uploader) {
 
-		$scope.polygons = [];
+		$scope.polygons = {};
 
 		$scope.selectPolygon = function(polygon) {
 			console.log(polygon);
@@ -29,16 +29,25 @@
 						$scope.currentPolygon = polygon;
 						$scope.$apply();
 					} else {
-						deletePolygon(polygon);
+						$scope.deletePolygon(polygon);
 					}
 				}
 			});
 		}
 
-		function deletePolygon(polygon) {
+		$scope.highlight = function(poly) {
+
+		};
+
+
+		$scope.deletePolygon = function(polygon) {
+			if (polygon.filename) {
+				delete $scope.polygons[polygon.filename];
+				polygon = polygon.polygon;	
+			}
 			polygon.setMap(null);
 			polygon = null;
-		}
+		};
 
 		function addPolyGon(polygon, filename) {
 			var newPolygon = {
@@ -46,7 +55,7 @@
 				polygon: polygon
 			};
 
-			$scope.polygons.push(newPolygon);
+			$scope.polygons[filename] = newPolygon;
 			$scope.$apply();
 		}
 
@@ -54,12 +63,12 @@
 			var file = document.getElementById('upload').files[0];
 			if (!file) {
 				console.error('No file uploaded!');
-				deletePolygon($scope.currentPolygon);
+				$scope.deletePolygon($scope.currentPolygon);
 				$scope.loading = false;
 			} else if (file.type !== 'audio/mp3' && file.type !== 'audio/ogg') {
 				vex.dialog.alert('Wrong file type!');
 				$scope.loading = false;
-				deletePolygon($scope.currentPolygon);
+				$scope.deletePolygon($scope.currentPolygon);
 			} else {
 				Uploader.sign_request(file, function(response) {
 					Uploader.upload(file, response.signed_request, response.url, function() {

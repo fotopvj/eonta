@@ -29,7 +29,8 @@ html(lang='en')
         p
         p
         div(ng-repeat="poly in polygons")
-          a {{poly.filename}}
+          a(ng-click="highlight(poly)") {{poly.filename}}
+          button(ng-click="deletePolygon(poly)") delete
 
 
         // google map API
