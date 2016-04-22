@@ -63,11 +63,9 @@
 			} else {
 				Uploader.sign_request(file, function(response) {
 					Uploader.upload(file, response.signed_request, response.url, function() {
-						console.log(response);
-						addPolyGon($scope.currentPolygon, response.filename);
-						vex.dialog.alert('upload complete!');
 						$scope.loading = false;
-						$scope.$apply();
+						addPolyGon($scope.currentPolygon, file.name);
+						vex.dialog.alert('upload complete!');
 					});
 				});
 
