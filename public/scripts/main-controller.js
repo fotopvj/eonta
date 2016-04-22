@@ -9,10 +9,17 @@
 			console.log(polygon);
 		};
 
-		google.maps.event.addListener(map, 'click', function(e) {
-			$scope.polygons.forEach(function(shape) {
-				var res = google.maps.geometry.poly.containsLocation(e.latLng, shape);
-				console.log('checks shape', res);
+		google.maps.event.addListener(Maps.map, 'click', function(e) {
+			Object.keys($scope.polygons).forEach(function(polyKey) {
+				var shape = $scope.polygons[polyKey];
+				var res = google.maps.geometry.poly.containsLocation(e.latLng, shape.polygon);
+
+				/*
+
+					play your audio here !!!!
+
+				*/
+
 			});
 		});
 		google.maps.event.addListener(Maps.drawingManager, 'polygoncomplete', function(polygon) {

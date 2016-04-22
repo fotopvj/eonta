@@ -119,6 +119,7 @@ app.service('Maps', function($rootScope) {
         defaultFill: defaultFill,
         drawingManager: drawingManager,
         highlightFill: highlightFill,
+        map: map,
         pos: pos
     };
 });
