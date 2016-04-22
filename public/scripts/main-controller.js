@@ -36,9 +36,13 @@
 		}
 
 		$scope.highlight = function(poly) {
-
+			//set the default color for all polygons
+			Object.keys($scope.polygons).forEach(function(item) {
+				$scope.polygons[item].polygon.setOptions({strokeWeight: 2.0, fillColor: Maps.defaultFill});
+			});
+			//set the highlight color for the selected polygon
+			poly.polygon.setOptions({strokeWeight: 2.0, fillColor: Maps.highlightFill});
 		};
-
 
 		$scope.deletePolygon = function(polygon) {
 			if (polygon.filename) {
@@ -56,6 +60,7 @@
 			};
 
 			$scope.polygons[filename] = newPolygon;
+			$scope.highlight(newPolygon);
 			$scope.$apply();
 		}
 

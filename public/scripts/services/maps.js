@@ -21,6 +21,9 @@ app.service('Maps', function($rootScope) {
         }]
     }];
 
+    var defaultFill = '#ffff00';
+    var highlightFill = '#00ffff';
+
     var map = new google.maps.Map(document.getElementById('map'), {
         center: {
             lat: 40,
@@ -36,22 +39,12 @@ app.service('Maps', function($rootScope) {
         drawingControlOptions: {
             position: google.maps.ControlPosition.TOP_CENTER,
             drawingModes: [
-                google.maps.drawing.OverlayType.CIRCLE,
                 google.maps.drawing.OverlayType.POLYGON
             ]
         },
         //Options for the parameters of each overlay shape type
-        circleOptions: {
-            fillColor: '#ffff00',
-            fillOpacity: 0.5,
-            strokeWeight: 2,
-            clickable: false,
-            editable: true,
-            zIndex: 1,
-            draggable: true
-        },
         polygonOptions: {
-            fillColor: '#ffff00',
+            fillColor: defaultFill,
             fillOpacity: 0.5,
             strokeWeight: 2,
             clickable: false,
@@ -123,7 +116,9 @@ app.service('Maps', function($rootScope) {
     }
 
     return {
+        defaultFill: defaultFill,
         drawingManager: drawingManager,
+        highlightFill: highlightFill,
         pos: pos
     };
 });
