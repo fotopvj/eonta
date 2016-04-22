@@ -17,6 +17,7 @@ html(lang='en')
           li
             a(href='syntax.htm', title='About') About
     main(role='main', ng-app='eonta', ng-controller='mainController')
+      #spinner(ng-show="loading")
       h1 welcome
       input#upload(type="file" onchange="angular.element(this).scope().upload(this)")
       br
@@ -26,7 +27,11 @@ html(lang='en')
         p Click to enter Audition Mode
           input#audition(name='auditionCheck', type='checkbox', value='Click For Audition Mode')
         p
-        p  
+        p
+        div(ng-repeat="poly in polygons")
+          a {{poly.filename}}
+
+
         // google map API
         #map
     footer(role='contentinfo')
@@ -38,8 +43,8 @@ html(lang='en')
     script(type='text/javascript', src='vendor/angular/angular.js')
     script(type='text/javascript', src='vendor/jquery/dist/jquery.min.js')
     script(type='text/javascript', src='vendor/vex/js/vex.combined.min.js')
+    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAThgvzOfkrCe4w2oZegF-J0GHFFQSUMRQ&libraries=drawing,places,geometry')
     script(src='scripts/app.js')
     script(src='scripts/services/uploader.js')
+    script(src='scripts/services/maps.js')
     script(src='scripts/main-controller.js')
-    // Google maps API script tag
-    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAThgvzOfkrCe4w2oZegF-J0GHFFQSUMRQ&libraries=drawing,places,geometry&callback=initMap', async='', defer='')

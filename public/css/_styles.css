@@ -186,3 +186,19 @@ aside.languages {
     height: 400px;
     margin: 0 auto;
 }
+
+#spinner {
+	width: 100%;
+	height: 100%;
+	background: url('/images/45.gif');
+	background-position: center center;
+	background-repeat: no-repeat;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 999999999;
+}
+
+#upload {
+	display: none;
+}
