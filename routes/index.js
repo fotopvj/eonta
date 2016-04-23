@@ -1,11 +1,12 @@
 var dotenv = require('dotenv').config();
 var express = require('express');
+var polygons = require('../controllers/polygons.js');
 var router = express.Router();
 var aws = require('aws-sdk');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-	res.render('eonta', {});
+	res.render('eonta');
 });
 
 /* GET sign requests for AWS. */
@@ -33,5 +34,11 @@ router.get('/sign', function(req, res) {
 		});
 	});
 });
+
+router.get('/polygons', polygons.list);
+router.get('/polygons/:id', polygons.get);
+router.post('/polygons/', polygons.create);
+router.post('/polygons/:id', polygons.update);
+router.delete('/polygons/:id', polygons.remove);
 
 module.exports = router;
