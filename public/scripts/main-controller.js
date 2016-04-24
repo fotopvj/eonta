@@ -72,11 +72,18 @@ app.controller('mainController', function($scope, Maps, Polygon, Uploader) {
 
 	$scope.deletePolygon = function(index) {
 		var thisPolygon = $scope.polygons[index];
-		Polygon.remove(thisPolygon._id).then(function(x) {
-			$scope.polygons.splice(index, 1);
+		vex.dialog.confirm({
+			message: 'are you sure you want to delete' + thisPolygon.filename + '?',
+			callback: function(val) {
+				if (val) {
+					Polygon.remove(thisPolygon._id).then(function() {
+						$scope.polygons.splice(index, 1);
+					});
+
+					takePolygonOffMap(thisPolygon.polygon);
+				}
+			}
 		});
-		
-		takePolygonOffMap(thisPolygon.polygon);
 	};
 
 	function addPolygon(polygon, filename) {
@@ -91,7 +98,7 @@ app.controller('mainController', function($scope, Maps, Polygon, Uploader) {
 		Polygon.create(newPolygon).then(function(res) {
 			var newerPolygon = res.data;
 			newerPolygon.polygon = polygon;
-			$scope.polygons.push(newerPolygon)
+			$scope.polygons.push(newerPolygon);
 			$scope.highlight(newerPolygon);
 		});
 	}
