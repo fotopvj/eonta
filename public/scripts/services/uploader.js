@@ -1,14 +1,7 @@
 app.service('Uploader', function() {
-    function upload(file, signed_request, url, done) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('PUT', signed_request);
-        xhr.setRequestHeader('x-amz-acl', 'public-read')
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                done();
-            }
-        }
-        xhr.send(file);
+
+    function makeUrl(filename) {
+        return 'https://eonta.s3.amazonaws.com/' + filename;
     }
 
     function sign_request(file, done) {
@@ -24,9 +17,22 @@ app.service('Uploader', function() {
         xhr.send();
     }
 
+    function upload(file, signed_request, url, done) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('PUT', signed_request);
+        xhr.setRequestHeader('x-amz-acl', 'public-read')
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                done();
+            }
+        }
+        xhr.send(file);
+    }
+
     return {
-        upload: upload,
-        sign_request: sign_request
+        makeUrl: makeUrl,
+        sign_request: sign_request,
+        upload: upload
     };
 
 });

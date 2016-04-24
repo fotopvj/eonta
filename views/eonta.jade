@@ -30,7 +30,7 @@ html(lang='en')
         p
         div(ng-repeat="poly in polygons")
           a(ng-click="highlight(poly)") {{poly.filename}}
-          button(ng-click="deletePolygon(poly)") delete
+          button(ng-click="deletePolygon($index)") delete
         // google map API
         #map
     footer(role='contentinfo')
@@ -44,6 +44,7 @@ html(lang='en')
     script(type='text/javascript', src='vendor/vex/js/vex.combined.min.js')
     script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAThgvzOfkrCe4w2oZegF-J0GHFFQSUMRQ&libraries=drawing,places,geometry')
     script(src='scripts/app.js')
-    script(src='scripts/services/uploader.js')
-    script(src='scripts/services/maps.js')
     script(src='scripts/main-controller.js')
+    script(src='scripts/services/maps.js')
+    script(src='scripts/services/polygon.js')
+    script(src='scripts/services/uploader.js')

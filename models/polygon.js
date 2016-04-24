@@ -6,19 +6,21 @@ mongoose.connect(process.env.MONGOURL);
 var schema = new mongoose.Schema({
 	ts: Date,
 	url: String,
-	polygon: mongoose.Schema.Types.Mixed
+	filename: String,
+	coordinates: [{lat: Number, lng: Number}]
 });
 
 var Polygon = mongoose.model('Polygon', schema);
 
 function create(data, callback, errCb) {
-	if (!data || !data.url || !data.polygon) {
+	if (!data || !data.url || !data.coordinates || !data.filename) {
 		errCb('Invalid data!')
 	} else {
 		var poly = new Polygon({
 			ts: Date.now(),
 			url: data.url,
-			polygon: data.polygon
+			filename: data.filename,
+			coordinates: data.coordinates
 		});
 		poly.save(function(err, dbData) {
 			if (err) {

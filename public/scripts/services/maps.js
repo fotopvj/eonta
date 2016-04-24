@@ -113,11 +113,41 @@ app.service('Maps', function() {
             'Error: Your browser doesn\'t support geolocation.');
     }
 
+    function addPolygon(coords) {
+        var newPoly = new google.maps.Polygon({
+            paths: coords,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+          });
+        newPoly.setMap(map);
+        return newPoly;
+    }
+
+    function getCoordinates(polygon) {
+        var coordinates = [];
+        // Since this polygon has only one path, we can call getPath() to return the
+        // MVCArray of LatLngs.
+        var vertices = polygon.getPath();
+
+        // Iterate over the vertices.
+        for (var i =0; i < vertices.getLength(); i++) {
+            var xy = vertices.getAt(i);
+            coordinates.push({lat: xy.lat(), lng: xy.lng()});
+        }
+
+        return coordinates;
+    }
+
     return {
         defaultFill: defaultFill,
         drawingManager: drawingManager,
         highlightFill: highlightFill,
         map: map,
-        pos: pos
+        pos: pos,
+        addPolygon: addPolygon,
+        getCoordinates: getCoordinates
     };
 });

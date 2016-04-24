@@ -3,6 +3,7 @@ var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 
@@ -15,6 +16,7 @@ app.set('view engine', 'jade');
 app.use(favicon());
 app.use(logger('dev'));
 app.use(cookieParser());
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.all('*', function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -54,6 +56,5 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
 
 module.exports = app;

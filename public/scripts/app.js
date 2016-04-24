@@ -1,2 +1,3 @@
-app = angular.module('eonta', []);
+var app = angular.module('eonta', []);
+
 vex.defaultOptions.className = 'vex-theme-wireframe';
