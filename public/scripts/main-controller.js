@@ -73,7 +73,6 @@ app.controller('mainController', function($scope, Maps, Polygon, Uploader) {
 	$scope.deletePolygon = function(index) {
 		var thisPolygon = $scope.polygons[index];
 		Polygon.remove(thisPolygon._id).then(function(x) {
-			console.log(x);
 			$scope.polygons.splice(index, 1);
 		});
 		

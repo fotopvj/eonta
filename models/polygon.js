@@ -7,7 +7,10 @@ var schema = new mongoose.Schema({
 	ts: Date,
 	url: String,
 	filename: String,
-	coordinates: [{lat: Number, lng: Number}]
+	coordinates: [{
+		lat: Number,
+		lng: Number
+	}]
 });
 
 var Polygon = mongoose.model('Polygon', schema);
