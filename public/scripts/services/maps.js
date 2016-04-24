@@ -98,8 +98,6 @@ app.service('Maps', function() {
 
             // zoom onto the user
             map.setZoom(16);
-
-            // console.log('your initial position is latitude:' + position.coords.latitude + ', longitude: ' + position.coords.longitude);
         }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
         });
