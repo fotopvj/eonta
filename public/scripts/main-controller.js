@@ -3,7 +3,7 @@
 //for db saving
 // http://stackoverflow.com/questions/32800664/google-map-api-v3-how-to-get-coordinates-of-all-shapes/32807644#32807644
 
-app.controller('mainController', function($scope, Maps, Polygon, Uploader) {
+app.controller('mainController', function($scope, Audio, Maps, Polygon, Uploader) {
 
 	var currentPolygon;
 
@@ -21,12 +21,11 @@ app.controller('mainController', function($scope, Maps, Polygon, Uploader) {
 
 	google.maps.event.addListener(Maps.map, 'click', function(e) {
 		$scope.polygons.forEach(function(polygon) {
-			var res = google.maps.geometry.poly.containsLocation(e.latLng, polygon.polygon);
-			console.log(polygon.filename + ' in here ' + res);
-			/*
-				play your audio here !!!!
-
-			*/
+			var inBounds = google.maps.geometry.poly.containsLocation(e.latLng, polygon.polygon);
+			console.log(polygon.filename + ' in here ' + inBounds);
+			if (inBounds) {
+				Audio.play(polygon.url);
+			}
 		});
 	});
 	google.maps.event.addListener(Maps.drawingManager, 'polygoncomplete', function(polygon) {
@@ -43,7 +42,7 @@ app.controller('mainController', function($scope, Maps, Polygon, Uploader) {
 					currentPolygon = polygon;
 					$scope.$apply();
 				} else {
-					$scope.deletePolygon(polygon);
+					takePolygonOffMap(polygon);
 				}
 			}
 		});
