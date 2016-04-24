@@ -20,11 +20,10 @@ app.controller('mainController', function($scope, Maps, Polygon, Uploader) {
 	initPolyList();
 
 	google.maps.event.addListener(Maps.map, 'click', function(e) {
-		Object.keys($scope.polygons).forEach(function(polyKey) {
-			var shape = $scope.polygons[polyKey];
-			var res = google.maps.geometry.poly.containsLocation(e.latLng, shape.polygon);
+		$scope.polygons.forEach(function(polygon) {
+			var res = google.maps.geometry.poly.containsLocation(e.latLng, polygon.polygon);
+			console.log(polygon.filename + ' in here ' + res);
 			/*
-
 				play your audio here !!!!
 
 			*/

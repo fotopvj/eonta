@@ -21,6 +21,16 @@ app.service('Maps', function() {
         }]
     }];
 
+    var polygonOptions = {
+        fillColor: defaultFill,
+        fillOpacity: 0.5,
+        strokeWeight: 2,
+        clickable: false,
+        editable: true,
+        zIndex: 1,
+        draggable: true
+    };
+
     var defaultFill = '#ffff00';
     var highlightFill = '#00ffff';
 
@@ -43,15 +53,7 @@ app.service('Maps', function() {
             ]
         },
         //Options for the parameters of each overlay shape type
-        polygonOptions: {
-            fillColor: defaultFill,
-            fillOpacity: 0.5,
-            strokeWeight: 2,
-            clickable: false,
-            editable: true,
-            zIndex: 1,
-            draggable: true
-        }
+        polygonOptions: polygonOptions
     });
     // adds the drawing manger to the map
     drawingManager.setMap(map);
@@ -114,13 +116,9 @@ app.service('Maps', function() {
     }
 
     function addPolygon(coords) {
-        var newPoly = new google.maps.Polygon({
-            paths: coords,
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: defaultFill,
-            fillOpacity: 0.35
-          });
+        var options = angular.copy(polygonOptions);
+        options.paths = coords;
+        var newPoly = new google.maps.Polygon(options);
         newPoly.setMap(map);
         return newPoly;
     }
