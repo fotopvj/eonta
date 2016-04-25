@@ -66,39 +66,18 @@ app.service('Maps', function() {
     var pos;
     var marker;
 
-    function dropMarker() {
-        if (marker) {
-            marker.setMap(null);
-            marker = null;
-        } else {
-            marker = new google.maps.Marker({
-                map: map,
-                draggable: true,
-                animation: google.maps.Animation.DROP,
-                position: pos
-            });
-        }
+    function removeMarker() {
+        marker.setMap(null);
+        marker = null;
     }
 
-    // finds the users initial coordinates and repositions the map to center around the user.  
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-
-            // reposition map to the user's position.
-            map.setCenter(pos);
-
-            // zoom onto the user
-            map.setZoom(16);
-        }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
+    function dropMarker() {
+        marker = new google.maps.Marker({
+            map: map,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+            position: pos
         });
-    } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
     }
 
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -134,17 +113,46 @@ app.service('Maps', function() {
         return coordinates;
     }
 
+    function myLocation() {
+        // finds the users initial coordinates and repositions the map to center around the user.  
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                // reposition map to the user's position.
+                map.setCenter(pos);
+
+                // zoom onto the user
+                map.setZoom(16);
+            }, function() {
+                handleLocationError(true, infoWindow, map.getCenter());
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+        }
+    }
+
+    myLocation();
+
     return {
+        addPolygon: addPolygon,
         defaultFill: defaultFill,
-        dropMarker: dropMarker,
         drawingManager: drawingManager,
+        dropMarker: dropMarker,
+        getCoordinates: getCoordinates,
         highlightFill: highlightFill,
         map: map,
-        pos: pos,
         marker: function() {
             return marker;
         },
-        addPolygon: addPolygon,
-        getCoordinates: getCoordinates
+        myLocation: myLocation,
+        pos: function() {
+            return pos;
+        },
+        removeMarker: removeMarker
     };
 });

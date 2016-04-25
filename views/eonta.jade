@@ -10,12 +10,6 @@ html(lang='en')
     header(role='banner')
       h1 EONTA
       h2 Platform for Creating GPS Based Compositions
-      nav(role='navigation')
-        ul
-          li
-            a(href='intro.htm', title='Eonta') Eonta
-          li
-            a(href='syntax.htm', title='About') About
     main(role='main', ng-app='eonta', ng-controller='mainController')
       #spinner(ng-show="loading")
       h1 welcome
@@ -25,15 +19,15 @@ html(lang='en')
         header
           p Create sound installations and compositions based on your environment.
         p Click to enter Audition Mode
-          input(type='checkbox' value='Click For Audition Mode' ng-model="hasMarker" ng-change="dropMarker()")
+          input(type='checkbox' value='Click For Audition Mode' ng-model="auditionMode" ng-change="toggleAuditionMode()")
         p
         p
+        #map
         div(ng-repeat="poly in polygons")
           a(ng-click="highlight(poly)") {{poly.filename}}
           button(ng-click="deletePolygon($index)") delete
           span(ng-show="poly.currentlyPlaying") &#9654;
         // google map API
-        #map
     footer(role='contentinfo')
       p
         | © 

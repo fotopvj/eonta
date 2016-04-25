@@ -1,4 +1,4 @@
-app.controller('mainController', function($scope, Audio, Maps, Polygon, Uploader) {
+app.controller('mainController', function($interval, $scope, Audio, Maps, Polygon, Uploader) {
 	'use strict';
 
 	var currentPolygon;
@@ -13,29 +13,52 @@ app.controller('mainController', function($scope, Audio, Maps, Polygon, Uploader
 		});
 	}
 
+	window.dump = function() {
+		console.log(Maps.myLocation())
+	}
+
+
+	function seeWhatToPlay(latlng) {
+		$scope.polygons.forEach(function(polygon) {
+			var inBounds = google.maps.geometry.poly.containsLocation(latlng, polygon.polygon);
+
+			if (inBounds && !polygon.currentlyPlaying) {
+				polygon.currentlyPlaying = Audio.play(polygon.url);
+			} else if (!inBounds && polygon.currentlyPlaying) {
+				polygon.currentlyPlaying();
+				delete polygon.currentlyPlaying;
+			}
+		});
+	}
+
 	initPolyList();
 
-	$scope.dropMarker = function() {
-		Maps.dropMarker();
+	$interval(function() {
+		if (!$scope.auditionMode) {
+			Maps.myLocation();
+			var latlng = new google.maps.LatLng(Maps.pos().lat, Maps.pos().lng)
+			if (!latlng) return;
+			if (Maps.marker()) {
+				Maps.marker().setPosition(latlng);
+			} else {
+				Maps.dropMarker();
+			}
+			seeWhatToPlay(latlng);
+		}
+	}, 1000);
 
-		if (!Maps.marker()) return;
-		google.maps.event.addListener(Maps.marker(), 'drag', function(e) {
-			$scope.polygons.forEach(function(polygon) {
-				var inBounds = google.maps.geometry.poly.containsLocation(e.latLng, polygon.polygon);
-
-				if (inBounds && !polygon.currentlyPlaying) {
-					polygon.currentlyPlaying = Audio.play(polygon.url);
-				} else if (!inBounds && polygon.currentlyPlaying) {
-					polygon.currentlyPlaying();
-					delete polygon.currentlyPlaying;
-				} 
+	$scope.toggleAuditionMode = function() {
+		if ($scope.auditionMode) {
+			if (!Maps.marker()) Maps.dropMarker();
+			google.maps.event.addListener(Maps.marker(), 'drag', function(e) {
+				seeWhatToPlay(e.latLng)
+				$scope.$apply();
 			});
-			$scope.$apply();
-		});
+		}
 	};
 
 	google.maps.event.addListener(Maps.drawingManager, 'polygoncomplete', function(polygon) {
-		updatePolygons(Maps.pos, polygon);
+		updatePolygons(Maps.pos(), polygon);
 	});
 
 	function updatePolygons(latlong, polygon) {
