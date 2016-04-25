@@ -29,6 +29,7 @@ app.service('Audio', function() {
 
         function stop() {
             source.stop(0);
+            audioCtx.close();
         }
 
         return stop;
