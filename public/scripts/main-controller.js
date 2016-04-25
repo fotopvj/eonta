@@ -13,11 +13,6 @@ app.controller('mainController', function($interval, $scope, Audio, Maps, Polygo
 		});
 	}
 
-	window.dump = function() {
-		console.log(Maps.myLocation())
-	}
-
-
 	function seeWhatToPlay(latlng) {
 		$scope.polygons.forEach(function(polygon) {
 			var inBounds = google.maps.geometry.poly.containsLocation(latlng, polygon.polygon);
