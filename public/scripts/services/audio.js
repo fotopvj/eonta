@@ -4,9 +4,10 @@ app.service('Audio', function() {
     // decodeAudioData to decode it and stick it in a buffer.
     // Then we put the buffer into the source
     // wire up buttons to stop and play audio
+    var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+    
     function play(url) {
         var songLength;
-        var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
         var source = audioCtx.createBufferSource();
         var request = new XMLHttpRequest();
 
@@ -29,7 +30,6 @@ app.service('Audio', function() {
 
         function stop() {
             source.stop(0);
-            audioCtx.close();
         }
 
         return stop;
