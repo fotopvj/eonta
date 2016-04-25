@@ -1,9 +1,5 @@
-'use strict';
-
-//for db saving
-// http://stackoverflow.com/questions/32800664/google-map-api-v3-how-to-get-coordinates-of-all-shapes/32807644#32807644
-
 app.controller('mainController', function($scope, Audio, Maps, Polygon, Uploader) {
+	'use strict';
 
 	var currentPolygon;
 
@@ -19,21 +15,20 @@ app.controller('mainController', function($scope, Audio, Maps, Polygon, Uploader
 
 	initPolyList();
 
-	var currentlyPlaying = {};
-
 	google.maps.event.addListener(Maps.map, 'click', function(e) {
 		$scope.polygons.forEach(function(polygon) {
 			var inBounds = google.maps.geometry.poly.containsLocation(e.latLng, polygon.polygon);
-			var name = polygon.filename;
 
-			if (inBounds && !currentlyPlaying[name]) {
-				currentlyPlaying[name] = Audio.play(polygon.url);
-			} else if (!inBounds && currentlyPlaying[name]) {
-				currentlyPlaying[name]();
-				delete currentlyPlaying[name];
+			if (inBounds && !polygon.currentlyPlaying) {
+				polygon.currentlyPlaying = Audio.play(polygon.url);
+			} else if (!inBounds && polygon.currentlyPlaying) {
+				polygon.currentlyPlaying();
+				delete polygon.currentlyPlaying;
 			} 
 		});
+		$scope.$apply();
 	});
+
 	google.maps.event.addListener(Maps.drawingManager, 'polygoncomplete', function(polygon) {
 		updatePolygons(Maps.pos, polygon);
 	});
@@ -80,6 +75,7 @@ app.controller('mainController', function($scope, Audio, Maps, Polygon, Uploader
 			message: 'are you sure you want to delete' + thisPolygon.filename + '?',
 			callback: function(val) {
 				if (val) {
+					if ($scope.polygons[index].currentlyPlaying) $scope.polygons[index].currentlyPlaying();
 					Polygon.remove(thisPolygon._id).then(function() {
 						$scope.polygons.splice(index, 1);
 					});

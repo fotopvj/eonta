@@ -31,6 +31,8 @@ html(lang='en')
         div(ng-repeat="poly in polygons")
           a(ng-click="highlight(poly)") {{poly.filename}}
           button(ng-click="deletePolygon($index)") delete
+          span(ng-show="poly.currentlyPlaying") &#9654;
+          //- img(src="images/1895-200.png" ng-show="poly.currentlyPlaying")
         // google map API
         #map
     footer(role='contentinfo')
