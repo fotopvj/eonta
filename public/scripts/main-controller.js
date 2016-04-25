@@ -19,13 +19,19 @@ app.controller('mainController', function($scope, Audio, Maps, Polygon, Uploader
 
 	initPolyList();
 
+	var currentlyPlaying = {};
+
 	google.maps.event.addListener(Maps.map, 'click', function(e) {
 		$scope.polygons.forEach(function(polygon) {
 			var inBounds = google.maps.geometry.poly.containsLocation(e.latLng, polygon.polygon);
-			console.log(polygon.filename + ' in here ' + inBounds);
-			if (inBounds) {
-				Audio.play(polygon.url);
-			}
+			var name = polygon.filename;
+
+			if (inBounds && !currentlyPlaying[name]) {
+				currentlyPlaying[name] = Audio.play(polygon.url);
+			} else if (!inBounds && currentlyPlaying[name]) {
+				currentlyPlaying[name]();
+				delete currentlyPlaying[name];
+			} 
 		});
 	});
 	google.maps.event.addListener(Maps.drawingManager, 'polygoncomplete', function(polygon) {
