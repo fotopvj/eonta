@@ -5,7 +5,7 @@ app.service('Audio', function() {
     // Then we put the buffer into the source
     // wire up buttons to stop and play audio
     var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-    
+
     function play(url) {
         var songLength;
         var source = audioCtx.createBufferSource();
@@ -34,6 +34,21 @@ app.service('Audio', function() {
 
         return stop;
     }
+
+    window.addEventListener('touchstart', function() {
+
+        // create empty buffer
+        var buffer = myContext.createBuffer(1, 1, 22050);
+        var source = myContext.createBufferSource();
+        source.buffer = buffer;
+
+        // connect to output (your speakers)
+        source.connect(myContext.destination);
+
+        // play the file
+        source.noteOn(0);
+
+    }, false);
 
     return {
         play: play
