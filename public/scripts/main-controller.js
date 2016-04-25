@@ -15,19 +15,24 @@ app.controller('mainController', function($scope, Audio, Maps, Polygon, Uploader
 
 	initPolyList();
 
-	google.maps.event.addListener(Maps.map, 'click', function(e) {
-		$scope.polygons.forEach(function(polygon) {
-			var inBounds = google.maps.geometry.poly.containsLocation(e.latLng, polygon.polygon);
+	$scope.dropMarker = function() {
+		Maps.dropMarker();
 
-			if (inBounds && !polygon.currentlyPlaying) {
-				polygon.currentlyPlaying = Audio.play(polygon.url);
-			} else if (!inBounds && polygon.currentlyPlaying) {
-				polygon.currentlyPlaying();
-				delete polygon.currentlyPlaying;
-			} 
+		if (!Maps.marker()) return;
+		google.maps.event.addListener(Maps.marker(), 'drag', function(e) {
+			$scope.polygons.forEach(function(polygon) {
+				var inBounds = google.maps.geometry.poly.containsLocation(e.latLng, polygon.polygon);
+
+				if (inBounds && !polygon.currentlyPlaying) {
+					polygon.currentlyPlaying = Audio.play(polygon.url);
+				} else if (!inBounds && polygon.currentlyPlaying) {
+					polygon.currentlyPlaying();
+					delete polygon.currentlyPlaying;
+				} 
+			});
+			$scope.$apply();
 		});
-		$scope.$apply();
-	});
+	};
 
 	google.maps.event.addListener(Maps.drawingManager, 'polygoncomplete', function(polygon) {
 		updatePolygons(Maps.pos, polygon);
@@ -72,14 +77,13 @@ app.controller('mainController', function($scope, Audio, Maps, Polygon, Uploader
 	$scope.deletePolygon = function(index) {
 		var thisPolygon = $scope.polygons[index];
 		vex.dialog.confirm({
-			message: 'are you sure you want to delete' + thisPolygon.filename + '?',
+			message: 'are you sure you want to delete ' + thisPolygon.filename + '?',
 			callback: function(val) {
 				if (val) {
 					if ($scope.polygons[index].currentlyPlaying) $scope.polygons[index].currentlyPlaying();
 					Polygon.remove(thisPolygon._id).then(function() {
 						$scope.polygons.splice(index, 1);
 					});
-
 					takePolygonOffMap(thisPolygon.polygon);
 				}
 			}

@@ -25,14 +25,13 @@ html(lang='en')
         header
           p Create sound installations and compositions based on your environment.
         p Click to enter Audition Mode
-          input#audition(name='auditionCheck', type='checkbox', value='Click For Audition Mode')
+          input(type='checkbox' value='Click For Audition Mode' ng-model="hasMarker" ng-change="dropMarker()")
         p
         p
         div(ng-repeat="poly in polygons")
           a(ng-click="highlight(poly)") {{poly.filename}}
           button(ng-click="deletePolygon($index)") delete
           span(ng-show="poly.currentlyPlaying") &#9654;
-          //- img(src="images/1895-200.png" ng-show="poly.currentlyPlaying")
         // google map API
         #map
     footer(role='contentinfo')

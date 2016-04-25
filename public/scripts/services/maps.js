@@ -58,11 +58,27 @@ app.service('Maps', function() {
     // adds the drawing manger to the map
     drawingManager.setMap(map);
 
-    var pos;
     // create an info window to initiate user position.  
     var infoWindow = new google.maps.InfoWindow({
         map: map
     });
+
+    var pos;
+    var marker;
+
+    function dropMarker() {
+        if (marker) {
+            marker.setMap(null);
+            marker = null;
+        } else {
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                position: pos
+            });
+        }
+    }
 
     // finds the users initial coordinates and repositions the map to center around the user.  
     if (navigator.geolocation) {
@@ -71,27 +87,6 @@ app.service('Maps', function() {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
-
-            var auditionCheck = document.getElementById('audition');
-
-            var marker;
-            auditionCheck.onchange = function() {
-
-                if (this.checked) {
-                    marker = new google.maps.Marker({
-                        map: map,
-                        draggable: true,
-                        animation: google.maps.Animation.DROP,
-                        position: {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        }
-                    });
-                } else if (marker) {
-                    marker.setMap(null);
-                    marker = null;
-                }
-            }
 
             // reposition map to the user's position.
             map.setCenter(pos);
@@ -128,9 +123,12 @@ app.service('Maps', function() {
         var vertices = polygon.getPath();
 
         // Iterate over the vertices.
-        for (var i =0; i < vertices.getLength(); i++) {
+        for (var i = 0; i < vertices.getLength(); i++) {
             var xy = vertices.getAt(i);
-            coordinates.push({lat: xy.lat(), lng: xy.lng()});
+            coordinates.push({
+                lat: xy.lat(),
+                lng: xy.lng()
+            });
         }
 
         return coordinates;
@@ -138,10 +136,14 @@ app.service('Maps', function() {
 
     return {
         defaultFill: defaultFill,
+        dropMarker: dropMarker,
         drawingManager: drawingManager,
         highlightFill: highlightFill,
         map: map,
         pos: pos,
+        marker: function() {
+            return marker;
+        },
         addPolygon: addPolygon,
         getCoordinates: getCoordinates
     };
