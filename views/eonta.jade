@@ -18,6 +18,7 @@ html(lang='en')
       article(role='article')
         header
           p Create sound installations and compositions based on your environment.
+            button(ng-click="initialize()") click here to start
         p Click to enter Audition Mode
           input(type='checkbox' value='Click For Audition Mode' ng-model="auditionMode" ng-change="toggleAuditionMode()")
         p

@@ -5,7 +5,7 @@ app.service('Audio', function() {
     // Then we put the buffer into the source
     // wire up buttons to stop and play audio
     var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-    
+
     function play(url) {
         var songLength;
         var source = audioCtx.createBufferSource();
@@ -22,11 +22,11 @@ app.service('Audio', function() {
                     source.loop = true;
                 },
                 function(e) {
-                    'Error with decoding audio data' + e.err
+                    console.log('Error with decoding audio data',e);
                 });
         }
         request.send();
-        source.start(0);
+        source.noteOn ? source.noteOn(0) : source.start(0);
 
         function stop() {
             source.stop(0);
@@ -34,6 +34,22 @@ app.service('Audio', function() {
 
         return stop;
     }
+
+    function iOShack() {
+        // create empty buffer
+        var buffer = audioCtx.createBuffer(1, 1, 22050);
+        var source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+
+        // connect to output (your speakers)
+        source.connect(audioCtx.destination);
+
+        // play the file
+        source.noteOn ? source.noteOn(0) : source.start(0);
+        window.removeEventListener('touchstart', iOShack);
+    }
+
+    window.addEventListener('touchstart', iOShack);
 
     return {
         play: play

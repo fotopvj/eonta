@@ -13,11 +13,6 @@ app.controller('mainController', function($interval, $scope, Audio, Maps, Polygo
 		});
 	}
 
-	window.dump = function() {
-		console.log(Maps.myLocation())
-	}
-
-
 	function seeWhatToPlay(latlng) {
 		$scope.polygons.forEach(function(polygon) {
 			var inBounds = google.maps.geometry.poly.containsLocation(latlng, polygon.polygon);
@@ -33,29 +28,34 @@ app.controller('mainController', function($interval, $scope, Audio, Maps, Polygo
 
 	initPolyList();
 
-	$interval(function() {
-		if (!$scope.auditionMode) {
-			Maps.myLocation();
-			var latlng = new google.maps.LatLng(Maps.pos().lat, Maps.pos().lng)
-			if (!latlng) return;
-			if (Maps.marker()) {
-				Maps.marker().setPosition(latlng);
-			} else {
-				Maps.dropMarker();
+	function initialize () {
+		$interval(function() {
+			if (!$scope.auditionMode) {
+				Maps.myLocation();
+				var latlng = new google.maps.LatLng(Maps.pos().lat, Maps.pos().lng)
+				if (!latlng) return;
+				if (Maps.marker()) {
+					Maps.marker().setPosition(latlng);
+				} else {
+					Maps.dropMarker();
+				}
+				seeWhatToPlay(latlng);
 			}
-			seeWhatToPlay(latlng);
-		}
-	}, 1000);
+		}, 1000);
 
-	$scope.toggleAuditionMode = function() {
-		if ($scope.auditionMode) {
-			if (!Maps.marker()) Maps.dropMarker();
-			google.maps.event.addListener(Maps.marker(), 'drag', function(e) {
-				seeWhatToPlay(e.latLng)
-				$scope.$apply();
-			});
-		}
-	};
+		$scope.toggleAuditionMode = function() {
+			if ($scope.auditionMode) {
+				if (!Maps.marker()) Maps.dropMarker();
+				google.maps.event.addListener(Maps.marker(), 'drag', function(e) {
+					seeWhatToPlay(e.latLng)
+					$scope.$apply();
+				});
+			}
+		};
+		
+	}
+
+	$scope.initialize = initialize;
 
 	google.maps.event.addListener(Maps.drawingManager, 'polygoncomplete', function(polygon) {
 		updatePolygons(Maps.pos(), polygon);
