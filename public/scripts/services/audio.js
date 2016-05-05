@@ -43,7 +43,6 @@ app.service('Audio', function() {
 
         // connect to output (your speakers)
         source.connect(audioCtx.destination);
-        console.log('click runs', source)
 
         // play the file
         source.noteOn ? source.noteOn(0) : source.start(0);
