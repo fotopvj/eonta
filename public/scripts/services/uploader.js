@@ -6,7 +6,7 @@ app.service('Uploader', function() {
 
     function sign_request(file, done) {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/sign?file_name=' + file.name + '&file_type=' + file.type);
+        xhr.open('GET', 'api/sign?file_name=' + file.name + '&file_type=' + file.type);
 
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {

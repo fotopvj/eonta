@@ -3,21 +3,21 @@ app.factory('Polygon', function($http) {
     function list() {
         return $http({
             method: 'GET',
-            url: 'polygons/'
+            url: 'api/polygons/'
         });
     }
 
     function get(id) {
         return $http({
             method: 'GET',
-            url: 'polygons/' + id,
+            url: 'api/polygons/' + id,
         });
     }
 
     function create(data) {
         return $http({
             method: 'POST',
-            url: 'polygons/',
+            url: 'api/polygons/',
             data: data
         });
     }
@@ -25,7 +25,7 @@ app.factory('Polygon', function($http) {
     function update(data) {
         return $http({
             method: 'POST',
-            url: 'polygons/' + data.id,
+            url: 'api/polygons/' + data.id,
             data: data
         });
     }
@@ -33,7 +33,7 @@ app.factory('Polygon', function($http) {
     function remove(id) {
         return $http({
             method: 'DELETE',
-            url: 'polygons/' + id,
+            url: 'api/polygons/' + id,
         });
     }
 

@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
 });
 
 /* GET sign requests for AWS. */
-router.get('/sign', function(req, res) {
+router.get('/api/sign', function(req, res) {
 	aws.config.update({
 		accessKeyId: process.env.AS3_ACCESS_KEY,
 		secretAccessKey: process.env.AS3_SECRET_ACCESS_KEY
@@ -35,10 +35,10 @@ router.get('/sign', function(req, res) {
 	});
 });
 
-router.get('/polygons', polygons.list);
-router.get('/polygons/:id', polygons.get);
-router.post('/polygons/', polygons.create);
-router.post('/polygons/:id', polygons.update);
-router.delete('/polygons/:id', polygons.remove);
+router.get('/api/polygons', polygons.list);
+router.get('/api/polygons/:id', polygons.get);
+router.post('/api/polygons/', polygons.create);
+router.post('/api/polygons/:id', polygons.update);
+router.delete('/api/polygons/:id', polygons.remove);
 
 module.exports = router;
