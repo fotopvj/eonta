@@ -5,11 +5,11 @@ app.service('Audio', function() {
     // Then we put the buffer into the source
     // wire up buttons to stop and play audio
     var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-
     function play(url) {
         var songLength;
         var source = audioCtx.createBufferSource();
         var request = new XMLHttpRequest();
+        var gainNode = audioCtx.createGain();
 
         request.open('GET', url, true);
         request.responseType = 'arraybuffer';
@@ -17,9 +17,13 @@ app.service('Audio', function() {
             var audioData = request.response;
             audioCtx.decodeAudioData(audioData, function(buffer) {
                     songLength = buffer.duration;
-                    source.buffer = buffer;
-                    source.connect(audioCtx.destination);
+                    source.buffer = buffer; 
+                    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
                     source.loop = true;
+            
+                    source.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    gainNode.gain.linearRampToValueAtTime(1, audioCtx.currentTime + 2)
                 },
                 function(e) {
                     console.log('Error with decoding audio data',e);
@@ -28,8 +32,13 @@ app.service('Audio', function() {
         request.send();
         source.noteOn ? source.noteOn(0) : source.start(0);
 
+
         function stop() {
-            source.stop(0);
+
+            gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2)
+            setTimeout(function() {
+                source.stop(0);
+            }, 3000);
         }
 
         return stop;
@@ -43,6 +52,7 @@ app.service('Audio', function() {
 
         // connect to output (your speakers)
         source.connect(audioCtx.destination);
+
 
         // play the file
         source.noteOn ? source.noteOn(0) : source.start(0);
