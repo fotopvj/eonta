@@ -46,6 +46,7 @@ app.service('Audio', function() {
 
     // Makes it so audio can play on iOS //
     function iOShack() {
+        {
         // create empty buffer
         var buffer = audioCtx.createBuffer(1, 1, 22050);
         var source = audioCtx.createBufferSource();
@@ -56,7 +57,9 @@ app.service('Audio', function() {
 
 
         // play the file
-        // source.noteOn ? source.noteOn(0) : source.start(0);
+        source.noteOn ? source.noteOn(0) : source.start(0);
+        
+        /* Alternative that didn't work:
         if (source.start) {
                 source.start(0);
             } else if (source.play) {
@@ -64,11 +67,13 @@ app.service('Audio', function() {
             } else if (source.noteOn) {
                 source.noteOn(0);
             }
-            
+        */
         window.removeEventListener('touchstart', iOShack);
-    }
+     }
 
     window.addEventListener('touchstart', iOShack);
+    }
+
 
     return {
         play: play
