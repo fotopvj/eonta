@@ -9,31 +9,32 @@ html(lang='en')
   body
     header(role='banner')
       h1 EONTA
-      h2 Platform for Creating GPS Based Compositions
+      h2 +  +  +  +  +  +  +
     main(role='main', ng-app='eonta', ng-controller='mainController')
       #spinner(ng-show="loading")
-      h1 welcome
-      input#upload(type="file" onchange="angular.element(this).scope().upload(this)")
+      h3 Multi-Tracking Environment for Creating GPS Based Compositions
       br
+      input#upload(type="file" onchange="angular.element(this).scope().upload(this)")
       article(role='article')
         header
-          p Create sound installations and compositions based on your environment.
-            button(ng-click="initialize()") click here to start
-        p Click to enter Audition Mode
+        p Eonta will automatically read your location. Use the shape tool on the map to draw a new boundary and upload it's attached audio file. To test your composition, check the box for 'Audition Mode' and use the hand tool on the app to move the icon throughout the boundaries. A play symbol will appear next to the audio files corresponding to the occupied boundaries. 
+        br
+        button(ng-click="initialize()") START 
+        p AUDITION MODE: 
           input(type='checkbox' value='Click For Audition Mode' ng-model="auditionMode" ng-change="toggleAuditionMode()")
         p
         p
         #map
         div(ng-repeat="poly in polygons")
           a(ng-click="highlight(poly)") {{poly.filename}}
-          button(ng-click="deletePolygon($index)") delete
+          button(ng-click="deletePolygon($index)") X
           span(ng-show="poly.currentlyPlaying") &#9654;
         // google map API
     footer(role='contentinfo')
       p
         | © 
         a(href='', title='', target='_blank') Vasilis Fotopoulos
-        |  | follow me on Twitter. 
+        |  | Twitter. 
         a(href='https://twitter.com/d0m0k0s', title='Follow me on Twitter') @d0m0k0s
     script(type='text/javascript', src='vendor/angular/angular.js')
     script(type='text/javascript', src='vendor/jquery/dist/jquery.min.js')

@@ -1,5 +1,7 @@
 app.service('Maps', function() {
+
     // styling for the look of the map
+
     var styleArray = [{
         featureType: 'all',
         stylers: [{
