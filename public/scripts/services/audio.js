@@ -44,7 +44,8 @@ app.service('Audio', function() {
         return stop;
     }
 
-    function iOShack() {
+    // Makes it so audio can play on iOS //
+    /*function iOShack() {
         // create empty buffer
         var buffer = audioCtx.createBuffer(1, 1, 22050);
         var source = audioCtx.createBufferSource();
@@ -60,6 +61,22 @@ app.service('Audio', function() {
     }
 
     window.addEventListener('touchstart', iOShack);
+    */
+
+    window.addEventListener('touchstart', function() {
+
+    // create empty buffer
+    var buffer = myContext.createBuffer(1, 1, 22050);
+    var source = myContext.createBufferSource();
+    source.buffer = buffer;
+
+    // connect to output (your speakers)
+    source.connect(myContext.destination);
+
+    // play the file
+    source.noteOn(0);
+
+}, false);
 
     return {
         play: play
