@@ -25,6 +25,7 @@ html(lang='en')
         p
         p
         #map
+        br
         div(ng-repeat="poly in polygons")
           a(ng-click="highlight(poly)") {{poly.filename}}
           button(ng-click="deletePolygon($index)") X
