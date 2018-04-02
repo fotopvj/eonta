@@ -46,7 +46,6 @@ app.service('Audio', function() {
 
     // Makes it so audio can play on iOS //
     function iOShack() {
-        {
         // create empty buffer
         var buffer = audioCtx.createBuffer(1, 1, 22050);
         var source = audioCtx.createBufferSource();
@@ -69,11 +68,9 @@ app.service('Audio', function() {
             }
         */
         window.removeEventListener('touchstart', iOShack);
-     }
-
-    window.addEventListener('touchstart', iOShack);
     }
 
+    window.addEventListener('touchstart', iOShack);
 
     return {
         play: play
