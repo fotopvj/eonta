@@ -132,7 +132,6 @@ app.controller('mainController', function($interval, $scope, Audio, Maps, Polygo
 
 	$scope.upload = function() {
 		var file = document.getElementById('upload').files[0];
-		console.log(file.type)
 		if (!file) {
 			console.error('No file uploaded!');
 			takePolygonOffMap(currentPolygon);

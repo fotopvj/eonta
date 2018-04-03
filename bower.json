@@ -17,6 +17,7 @@
   "dependencies": {
     "angular": "^1.5.5",
     "jquery": "^2.2.3",
-    "vex": "^2.3.4"
+    "vex": "^2.3.4",
+    "howler.js": "howler#^2.0.9"
   }
 }
