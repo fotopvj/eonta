@@ -5,6 +5,7 @@ app.service('Audio', function() {
     // Then we put the buffer into the source
     // wire up buttons to stop and play audio
     var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+
     function play(url) {
         var songLength;
         var source = audioCtx.createBufferSource();
@@ -17,16 +18,16 @@ app.service('Audio', function() {
             var audioData = request.response;
             audioCtx.decodeAudioData(audioData, function(buffer) {
                     songLength = buffer.duration;
-                    source.buffer = buffer; 
+                    source.buffer = buffer;
                     gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
                     source.loop = true;
-            
+
                     source.connect(gainNode);
                     gainNode.connect(audioCtx.destination);
                     gainNode.gain.linearRampToValueAtTime(1, audioCtx.currentTime + 2)
                 },
                 function(e) {
-                    console.log('Error with decoding audio data',e);
+                    console.log('Error with decoding audio data', e);
                 });
         }
         request.send();
@@ -44,8 +45,21 @@ app.service('Audio', function() {
         return stop;
     }
 
+    var allowedTypes = {
+        'audio/mpeg': true,
+        'audio/x-m4a': true,
+        'audio/ogg': true,
+        'audio/mp3': true
+    };
+
+    function allowedType(type) {
+        if (allowedTypes[type]) return true;
+        return false;
+    }
+
     // Makes it so audio can play on iOS //
     function iOShack() {
+
         // create empty buffer
         var buffer = audioCtx.createBuffer(1, 1, 22050);
         var source = audioCtx.createBufferSource();
@@ -57,7 +71,7 @@ app.service('Audio', function() {
 
         // play the file
         source.noteOn ? source.noteOn(0) : source.start(0);
-        
+
         /* Alternative that didn't work:
         if (source.start) {
                 source.start(0);
