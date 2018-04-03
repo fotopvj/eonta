@@ -28,7 +28,7 @@ app.controller('mainController', function($interval, $scope, Audio, Maps, Polygo
 
 	initPolyList();
 
-	function initialize () {
+	function initialize() {
 		$interval(function() {
 			if (!$scope.auditionMode) {
 				Maps.myLocation();
@@ -52,7 +52,7 @@ app.controller('mainController', function($interval, $scope, Audio, Maps, Polygo
 				});
 			}
 		};
-		
+
 	}
 
 	$scope.initialize = initialize;
@@ -132,15 +132,12 @@ app.controller('mainController', function($interval, $scope, Audio, Maps, Polygo
 
 	$scope.upload = function() {
 		var file = document.getElementById('upload').files[0];
+		console.log(file.type)
 		if (!file) {
 			console.error('No file uploaded!');
 			takePolygonOffMap(currentPolygon);
 			$scope.loading = false;
-		} else if (file.type !== 'audio/mp3' && file.type !== 'audio/ogg') {
-			vex.dialog.alert('Wrong file type!');
-			$scope.loading = false;
-			takePolygonOffMap(currentPolygon);
-		} else {
+		} else if (Audio.allowedType(file.type)) {
 			Uploader.sign_request(file, function(response) {
 				Uploader.upload(file, response.signed_request, response.url, function() {
 					$scope.loading = false;
@@ -148,6 +145,10 @@ app.controller('mainController', function($interval, $scope, Audio, Maps, Polygo
 					vex.dialog.alert('upload complete!');
 				});
 			});
+		} else {
+			vex.dialog.alert('Wrong file type!');
+			$scope.loading = false;
+			takePolygonOffMap(currentPolygon);
 
 		}
 	};
