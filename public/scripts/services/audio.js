@@ -68,9 +68,11 @@ app.service('Audio', function() {
             }
         */
         window.removeEventListener('touchstart', iOShack);
+        //window.removeEventListener('touchend', iOShack);
     }
 
     window.addEventListener('touchstart', iOShack);
+    //window.addEventListener('touchend', iOShack);
 
     return {
         play: play

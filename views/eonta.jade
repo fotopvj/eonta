@@ -27,8 +27,8 @@ html(lang='en')
         #map
         br
         div(ng-repeat="poly in polygons")
-          a(ng-click="highlight(poly)") {{poly.filename}}
           button(ng-click="deletePolygon($index)") X
+          a(ng-click="highlight(poly)") {{poly.filename}}
           span(ng-show="poly.currentlyPlaying") &#9654;
         // google map API
     footer(role='contentinfo')
