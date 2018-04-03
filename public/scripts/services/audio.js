@@ -89,7 +89,8 @@ app.service('Audio', function() {
     //window.addEventListener('touchend', iOShack);
 
     return {
-        play: play
+        play,
+        allowedType
     };
 
 });
