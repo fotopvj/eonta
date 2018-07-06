@@ -1,13 +1,14 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('static-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const favicon = require('static-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const enforce = require('express-sslify');
 
-var routes = require('./routes/index');
+const routes = require('./routes/index');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -18,16 +19,10 @@ app.use(logger('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(enforce.HTTPS({
+    trustProtoHeader: true
+}));
 app.all('*', function(req, res, next) {
-
-    console.log('request', req.protocol, req.headers.host + req.url);
-
-    if (req.headers['X-Forwarded-Proto'] === 'http') {
-        res.redirect('https://' + req.headers.host + req.url);
-        return;
-    }
-
-    // res.header('X-Forwarded-Proto', 'https');
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     next();

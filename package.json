@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "postinstall": "bower install",
-    "dev": "nodemon", 
+    "dev": "nodemon",
     "start": "node ./bin/www"
   },
   "dependencies": {
@@ -15,6 +15,7 @@
     "debug": "~3.1.0",
     "dotenv": "^5.0.1",
     "express": "^4.16.2",
+    "express-sslify": "^1.2.0",
     "jade": "~1.11.0",
     "mongoose": "^5.0.7",
     "morgan": "~1.9.0",
