@@ -22,12 +22,12 @@ app.all('*', function(req, res, next) {
 
     console.log('request', req.protocol, req.headers.host + req.url);
 
-    if (req.protocol === 'http' && req.host !== 'localhost') {
+    if (req.headers['X-Forwarded-Proto'] === 'http') {
         res.redirect('https://' + req.headers.host + req.url);
         return;
     }
 
-    res.header('X-Forwarded-Proto', 'https');
+    // res.header('X-Forwarded-Proto', 'https');
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     next();
