@@ -19,6 +19,12 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.all('*', function(req, res, next) {
+
+    if (req.protocol === 'http' && req.host !== 'localhost') {
+        res.redirect('https://' + req.headers.host + req.url);
+        return;
+    }
+
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     next();
