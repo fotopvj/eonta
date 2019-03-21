@@ -17,13 +17,14 @@ const schema = new mongoose.Schema({
 const Polygon = mongoose.model('Polygon', schema);
 
 function create(data, callback, errCb) {
-	if (!data || !data.url || !data.coordinates || !data.filename) {
+	if (!data || !data.url || !data.coordinates || !data.filename || !data.room) {
 		errCb('Invalid data!');
 	} else {
 		var poly = new Polygon({
 			ts: Date.now(),
 			url: data.url,
 			filename: data.filename,
+			room: data.room,
 			coordinates: data.coordinates
 		});
 		poly.save(function(err, dbData) {

@@ -45,10 +45,10 @@ app.service('Audio', function() {
 
         //  gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
             setTimeout(function() {
-                sound.stop()
+                sound.stop();
             }, 3000);
 
-            sound.fade(1,0,3000, id);
+            sound.fade(1, 0, 3000, id);
 
         }
 

@@ -18,7 +18,7 @@ app.factory('Polygon', function($http) {
         return $http({
             method: 'POST',
             url: 'api/polygons/',
-            data: data
+            data
         });
     }
 
@@ -26,7 +26,7 @@ app.factory('Polygon', function($http) {
         return $http({
             method: 'POST',
             url: 'api/polygons/' + data.id,
-            data: data
+            data
         });
     }
 
@@ -38,10 +38,10 @@ app.factory('Polygon', function($http) {
     }
 
     return {
-        list: list,
-        get: get,
-        create: create,
-        update: update,
-        remove: remove    
+        list,
+        get,
+        create,
+        update,
+        remove
     };
 });

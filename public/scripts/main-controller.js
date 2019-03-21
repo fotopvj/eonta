@@ -1,13 +1,11 @@
 app.controller('mainController', function($interval, $location, $scope, Audio, Maps, Polygon, Uploader) {
 	'use strict';
 
-	window.$location = $location;
-
 	var currentPolygon;
 
 	function initPolyList() {
-		const locationArray = $location.$$absUrl.split('/')	
-		const room = locationArray[locationArray.length - 1]
+		const locationArray = $location.$$absUrl.split('/');
+		const room = locationArray[locationArray.length - 1];
 		$scope.polygons = [];
 		Polygon.list(room).then(function(res) {
 			res.data.forEach(function(item) {
@@ -118,11 +116,14 @@ app.controller('mainController', function($interval, $location, $scope, Audio, M
 	};
 
 	function addPolygon(polygon, filename) {
-		var coordinates = Maps.getCoordinates(polygon);
+		const coordinates = Maps.getCoordinates(polygon);
+		const locationArray = $location.$$absUrl.split('/');
+		const room = locationArray[locationArray.length - 1];
 
-		var newPolygon = {
-			filename: filename,
-			coordinates: coordinates,
+		const newPolygon = {
+			room,
+			filename,
+			coordinates,
 			url: Uploader.makeUrl(filename)
 		};
 
