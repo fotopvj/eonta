@@ -1,9 +1,9 @@
 app.factory('Polygon', function($http) {
 
-    function list() {
+    function list(room) {
         return $http({
             method: 'GET',
-            url: 'api/polygons/'
+            url: 'api/polygons/' + room
         });
     }
 

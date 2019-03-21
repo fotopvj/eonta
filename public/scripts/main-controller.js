@@ -1,11 +1,15 @@
-app.controller('mainController', function($interval, $scope, Audio, Maps, Polygon, Uploader) {
+app.controller('mainController', function($interval, $location, $scope, Audio, Maps, Polygon, Uploader) {
 	'use strict';
+
+	window.$location = $location;
 
 	var currentPolygon;
 
 	function initPolyList() {
+		const locationArray = $location.$$absUrl.split('/')	
+		const room = locationArray[locationArray.length - 1]
 		$scope.polygons = [];
-		Polygon.list().then(function(res) {
+		Polygon.list(room).then(function(res) {
 			res.data.forEach(function(item) {
 				item.polygon = Maps.addPolygon(item.coordinates);
 				$scope.polygons.push(item);

@@ -16,8 +16,9 @@ function get(req, res) {
 	});
 }
 
-function list (req, res) {
-	Polygon.list(function(data) {
+function list(req, res) {
+	const room = req.params.room;
+	Polygon.list(room, function(data) {
 		res.json(data);
 	}, function(error) {
 		res.error(error);
@@ -41,9 +42,9 @@ function update(req, res) {
 }
 
 module.exports = {
-	create: create,
-	get: get,
-	list: list,
-	remove: remove,
-	update: update
+	create,
+	get,
+	list,
+	remove,
+	update
 };

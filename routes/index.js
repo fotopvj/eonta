@@ -1,8 +1,8 @@
-var dotenv = require('dotenv').config();
-var express = require('express');
-var polygons = require('../controllers/polygons.js');
-var router = express.Router();
-var aws = require('aws-sdk');
+require('dotenv').config();
+const express = require('express');
+const polygons = require('../controllers/polygons.js');
+const router = express.Router();
+const aws = require('aws-sdk');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -16,8 +16,8 @@ router.get('/api/sign', function(req, res) {
 		secretAccessKey: process.env.AS3_SECRET_ACCESS_KEY
 	});
 
-	var s3 = new aws.S3();
-	var options = {
+	const s3 = new aws.S3();
+	const options = {
 		Bucket: process.env.AS3_BUCKET,
 		Key: req.query.file_name,
 		Expires: 60,
@@ -35,10 +35,15 @@ router.get('/api/sign', function(req, res) {
 	});
 });
 
-router.get('/api/polygons', polygons.list);
+router.get('/api/polygons/', polygons.list);
+router.get('/api/polygons/:room', polygons.list);
 router.get('/api/polygons/:id', polygons.get);
 router.post('/api/polygons/', polygons.create);
 router.post('/api/polygons/:id', polygons.update);
 router.delete('/api/polygons/:id', polygons.remove);
+
+router.get('/:room', function(req, res) {
+	res.render('eonta');
+});
 
 module.exports = router;

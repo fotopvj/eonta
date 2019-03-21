@@ -1,23 +1,24 @@
-var dotenv = require('dotenv').config();
-var mongoose = require('mongoose');
+require('dotenv').config();
+const mongoose = require('mongoose');
 
 mongoose.connect(process.env.MONGOURL);
 
-var schema = new mongoose.Schema({
+const schema = new mongoose.Schema({
 	ts: Date,
 	url: String,
 	filename: String,
+	room: String,
 	coordinates: [{
 		lat: Number,
 		lng: Number
 	}]
 });
 
-var Polygon = mongoose.model('Polygon', schema);
+const Polygon = mongoose.model('Polygon', schema);
 
 function create(data, callback, errCb) {
 	if (!data || !data.url || !data.coordinates || !data.filename) {
-		errCb('Invalid data!')
+		errCb('Invalid data!');
 	} else {
 		var poly = new Polygon({
 			ts: Date.now(),
@@ -45,8 +46,8 @@ function get(id, callback, errCb) {
 	});
 }
 
-function list(callback, errCb) {
-	Polygon.find(function(err, data) {
+function list(room, callback, errCb) {
+	Polygon.find({ room }, function(err, data) {
 		if (err) {
 			errCb(err);
 		} else {
@@ -76,9 +77,9 @@ function update(data, callback, errCb) {
 }
 
 module.exports = {
-	create: create,
-	get: get,
-	list: list,
-	remove: remove,
-	update: update
+	create,
+	get,
+	list,
+	remove,
+	update
 };
