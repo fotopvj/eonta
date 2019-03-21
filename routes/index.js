@@ -6,7 +6,7 @@ const aws = require('aws-sdk');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-	res.render('eonta');
+	res.redirect('/main');
 });
 
 /* GET sign requests for AWS. */
