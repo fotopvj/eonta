@@ -4,7 +4,6 @@
   "description": "",
   "main": "",
   "moduleType": [],
-  "license": "MIT",
   "private": true,
   "ignore": [
     "**/.*",
@@ -15,9 +14,10 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "^1.5.5",
+    "angular": "^1.7.8",
     "jquery": "^2.2.3",
     "vex": "^2.3.4",
-    "howler.js": "howler#^2.0.9"
+    "howler.js": "howler#^2.0.9",
+    "angular-ui-router": "ui-router#^1.0.22"
   }
 }

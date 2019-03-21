@@ -1,0 +1,123 @@
+{
+    "env": {
+        "es6": true,
+        "mocha": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 2018
+    },
+    "rules": {
+        "array-element-newline": [
+            "error",
+            "consistent"
+        ],
+        "array-bracket-spacing": [
+            "error",
+            "never"
+        ],
+        "block-scoped-var": "error",
+        "brace-style": "error",
+        "comma-spacing": [
+            "error",
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "computed-property-spacing": [
+            "error",
+            "never"
+        ],
+        "dot-notation": "error",
+        "eol-last": [
+            "error",
+            "always"
+        ],
+        "func-call-spacing": [
+            "error",
+            "never"
+        ],
+        "global-require": "error",
+        "handle-callback-err": "error",
+        "keyword-spacing": [
+            "error",
+            {
+                "before": true,
+                "after": true
+            }
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "no-console": 0,
+        "no-else-return": "error",
+        "no-eval": "error",
+        "no-lonely-if": "error",
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 2,
+                "maxBOF": 1
+            }
+        ],
+        "no-multi-spaces": "error",
+        "nonblock-statement-body-position": [
+            "error",
+            "beside"
+        ],
+        "no-new-func": "error",
+        "no-trailing-spaces": "error",
+        "no-useless-return": "error",
+        "object-curly-spacing": [
+            "error",
+            "always"
+        ],
+        "object-shorthand": [
+            "error",
+            "always",
+            {
+                "avoidQuotes": true
+            }
+        ],
+        "operator-linebreak": [
+            "error",
+            "none"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "quote-props": [
+            "error",
+            "as-needed"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "semi-style": [
+            "error",
+            "last"
+        ],
+        "sort-vars": ["error", {
+	        "ignoreCase": true
+	    }],
+        "space-before-blocks": [
+            "error",
+            "always"
+        ],
+        "space-before-function-paren": [
+            "error",
+            "never"
+        ],
+        "space-infix-ops": "error",
+        "space-in-parens": [
+            "error",
+            "never"
+        ],
+        "yoda": "error"
+    }
+}
